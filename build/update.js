@@ -19,17 +19,35 @@ var workersrcdir  =  path.join(braceroot, 'workersrc');
 var workerdir     =  path.join(braceroot, 'worker');
 var buildroot     =  path.join(__dirname, 'ace-build');
 
-var aceTag = 'v1.2.3';
+//var aceTag = 'fix-brackets';
+//var aceTag = 'master';
 
 +function updateCleanAndPutInOrder() {
 
   +function cloneFreshAndRemoveUnneeded() {
-    rm('-rf', buildroot)
-    exec('git clone git://github.com/ajaxorg/ace-builds.git ' + buildroot);
-    exec('(cd ' + buildroot + ' && git pull && git checkout ' + aceTag + ')');
+    //Original code for cloning ace repo...
+    //rm('-rf', buildroot)
+    // exec('git clone git://github.com/Dmitri-2/ace-build.git ' + buildroot);
+    //exec('(cd ' + buildroot + ' && git pull && git checkout ' + aceTag + ')');
 
-    [ 'demo', 'kitchen-sink', 'src-min-noconflict', 'src-min', 'src', 'textarea' ]
-      .forEach(function (dir) { rm('-rf', path.join(buildroot, dir)) })
+    //This code correctly pulls just the /build directory from the gracelang
+    //git repo and sets it up for brace to use
+    exec("rm -rf ace-build");
+    exec("mkdir ace-build");
+    exec("git clone https://github.com/gracelang/ace.git ace-build");
+    exec("(cd ace-build && git pull && git checkout fix-brackets)");
+
+    //Now delete everything except the build folder
+    //We only want the build folders contents in ace-build, nothing else
+    exec("mkdir ace-temp");
+    exec("mv ace-build/build/* ./ace-temp");
+    exec("rm -rf ace-build/*");
+    exec("mv ./ace-temp/* ./ace-build");
+    exec("rm -rf ace-temp");
+
+
+    var dirs = [ 'demo', 'kitchen-sink', 'src-min-noconflict', 'src-min', 'src', 'textarea' ];
+    dirs.forEach(function (dir) { rm('-rf', path.join(buildroot, dir)) })
 
     rm(path.join(buildroot, '*'));
 
