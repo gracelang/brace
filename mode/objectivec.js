@@ -114,7 +114,7 @@ var c_cppHighlightRules = function() {
                 next : "comment"
             }, {
                 token : "string", // character
-                regex : "'(?:" + escapeRe + "|.)'"
+                regex : "'(?:" + escapeRe + "|.)?'"
             }, {
                 token : "string.start",
                 regex : '"', 
@@ -152,10 +152,10 @@ var c_cppHighlightRules = function() {
                 regex : cFunctions
             }, {
                 token : keywordMapper,
-                regex : "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
+                regex : "[a-zA-Z_$][a-zA-Z0-9_$]*"
             }, {
                 token : "keyword.operator",
-                regex : "!|\\$|%|&|\\*|\\-\\-|\\-|\\+\\+|\\+|~|==|=|!=|<=|>=|<<=|>>=|>>>=|<>|<|>|!|&&|\\|\\||\\?\\:|\\*=|%=|\\+=|\\-=|&=|\\^=|\\b(?:in|new|delete|typeof|void)"
+                regex : /--|\+\+|<<=|>>=|>>>=|<>|&&|\|\||\?:|[*%\/+\-&\^|~!<>=]=?/
             }, {
               token : "punctuation.operator",
               regex : "\\?|\\:|\\,|\\;|\\."

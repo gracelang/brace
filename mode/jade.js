@@ -54,7 +54,7 @@ ace.define("ace/mode/javascript_highlight_rules",["require","exports","module","
 var oop = acequire("../lib/oop");
 var DocCommentHighlightRules = acequire("./doc_comment_highlight_rules").DocCommentHighlightRules;
 var TextHighlightRules = acequire("./text_highlight_rules").TextHighlightRules;
-var identifierRe = "[a-zA-Z\\$_\u00a1-\uffff][a-zA-Z\\d\\$_\u00a1-\uffff]*\\b";
+var identifierRe = "[a-zA-Z\\$_\u00a1-\uffff][a-zA-Z\\d\\$_\u00a1-\uffff]*";
 
 var JavaScriptHighlightRules = function(options) {
     var keywordMapper = this.createKeywordMapper({
@@ -70,7 +70,7 @@ var JavaScriptHighlightRules = function(options) {
             "JSON|Math|"                                                               + // Other
             "this|arguments|prototype|window|document"                                 , // Pseudo
         "keyword":
-            "const|yield|import|get|set|" +
+            "const|yield|import|get|set|async|await|" +
             "break|case|catch|continue|default|delete|do|else|finally|for|function|" +
             "if|in|instanceof|new|return|switch|throw|try|typeof|let|var|while|with|debugger|" +
             "__parent__|__count__|escape|unescape|with|__proto__|" +
@@ -379,7 +379,7 @@ var JavaScriptHighlightRules = function(options) {
             }]
         });
         
-        if (!options || !options.noJSX)
+        if (!options || options.jsx != false)
             JSX.call(this);
     }
     
@@ -942,7 +942,7 @@ var HtmlHighlightRules = function() {
     });
 
     this.embedTagRules(CssHighlightRules, "css-", "style");
-    this.embedTagRules(new JavaScriptHighlightRules({noJSX: true}).getRules(), "js-", "script");
+    this.embedTagRules(new JavaScriptHighlightRules({jsx: false}).getRules(), "js-", "script");
 
     if (this.constructor === HtmlHighlightRules)
         this.normalizeRules();
@@ -1563,8 +1563,7 @@ ace.define("ace/mode/coffee_highlight_rules",["require","exports","module","ace/
 
         var illegal = (
             "case|const|default|function|var|void|with|enum|export|implements|" +
-            "interface|let|package|private|protected|public|static|yield|" +
-            "__hasProp|slice|bind|indexOf"
+            "interface|let|package|private|protected|public|static|yield"
         );
 
         var supportClass = (
