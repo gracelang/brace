@@ -255,9 +255,21 @@ var SearchBox = function(editor, range, showReplaceForm) {
     this.$searchBarKb = new HashHandler();
     this.$searchBarKb.bindKeys({
         "Ctrl-f|Command-f": function(sb) {
+            var search, view;
+            view = $("#grace-view");
+            search = view.find(".search");
             var isReplace = sb.isReplace = !sb.isReplace;
             sb.replaceBox.style.display = isReplace ? "" : "none";
             sb.searchInput.focus();
+            //Pull in the Grace IDE HTML code
+            //If it is there, modify the Search/Replace button
+            if(search.html() != undefined) {
+                if (search.find(".label").html() == "Search") {
+                    search.find(".label").html("Replace");
+                } else {
+                    search.find(".label").html("Search");
+                }
+            }
         },
         "Ctrl-H|Command-Option-F": function(sb) {
             sb.replaceBox.style.display = "";
